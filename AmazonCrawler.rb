@@ -2,6 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'sequel'
 require 'sqlite3'
+require 'securerandom'
 
 # Połączenie z bazą SQLite
 DB = Sequel.sqlite('books.db')
@@ -37,11 +38,11 @@ main_url = 'https://www.amazon.pl/s?i=stripbooks&rh=n%3A20657313031&s=popularity
 base_url = user_input.empty? ? main_url : "https://www.amazon.pl/s?k=#{user_input}&i=stripbooks&ref=nb_sb_noss"
 
 # Pobranie liczby stron do pobrania
-puts "Wprowadź liczbę stron do pobrania (lub naciśnij Enter, aby pobrać 10 stron):"
+puts "Wprowadź liczbę stron do pobrania (lub naciśnij Enter, aby pobrać 3 stron):"
 pages_input = gets.chomp.strip
 
-# Jeśli użytkownik nie poda liczby, ustawiamy domyślną wartość na 10
-n = pages_input.empty? ? 10 : pages_input.to_i
+# Jeśli użytkownik nie poda liczby, ustawiamy domyślną wartość na 3
+n = pages_input.empty? ? 3 : pages_input.to_i
 
 # Ustawienie nagłówków dla requestów
 headers = {
@@ -52,6 +53,7 @@ headers = {
 # Pobieranie i zapisywanie danych z kolejnych stron
 (1..n).each do |page|
   url = "#{base_url}&page=#{page}"
+  sleep(rand(1..3)) # Losowe opóźnienie przed requestem
   
   begin
     html = URI.open(url, headers)
@@ -88,6 +90,7 @@ headers = {
       # Pobieranie szczegółowych informacji z podstrony książki
       if book['link'] != ""
         begin
+          sleep(rand(1..3)) # Losowe opóźnienie przed pobraniem szczegółów
           book_html = URI.open(book['link'], headers)
           book_doc = Nokogiri::HTML(book_html)
 
