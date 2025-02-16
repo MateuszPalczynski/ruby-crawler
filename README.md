@@ -1,18 +1,19 @@
-# Amazon Product Crawler
+# Amazon Book Crawler  
 
-This is a simple web scraper for extracting product information from Amazon using Ruby and the Nokogiri library.  
+A Ruby script that scrapes book data from Amazon Poland and saves it to an SQLite database.  
 
 ## Features  
-- Extracts basic product data (title, price) from a specific Amazon category.  
-- Can be extended to scrape product details from individual product pages.  
-- Stores product links for further processing.  
-- Data can be saved to a database (e.g., SQLite via Sequel).  
+- Extracts book details (title, price, rating, release date).  
+- Supports keyword-based search or default category scraping.  
+- Scrapes additional details from product pages (publisher, ISBN-13, etc.).  
+- Stores data in `books.db` using Sequel.  
 
 ## Requirements  
-- Ruby  
-- Nokogiri  
-- HTTParty (or another HTTP client)  
-- Sequel (if storing data in a database)  
+Install dependencies with:  
+gem install nokogiri open-uri sequel sqlite3 securerandom
 
-## Usage  
-Run the script to scrape product data from the specified Amazon category. Modify the code to extend functionality, such as keyword-based search or additional product details extraction.  
+## Usage
+1. Run the script:
+ruby amazon_crawler.rb
+2. Enter a search keyword or press Enter for the default category.
+3. Specify the number of pages to scrape (default: 3).
